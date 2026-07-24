@@ -39,19 +39,45 @@ exports.addMenuItem = async (req, res) => {
   }
 };
 
-// Get All Menu Items
+// Get All Menu Items with Search & Category Filter
 exports.getAllMenuItems = async (req, res) => {
   try {
-    const menuItems = await Menu.find();
+
+    const { search, category } = req.query;
+
+    const filter = {};
+
+    // Search by name
+    if (search) {
+      filter.name = {
+        $regex: search,
+        $options: "i",
+      };
+    }
+
+    // Filter by category
+    if (category && category !== "All") {
+      filter.category = {
+        $regex: `^${category}$`,
+        $options: "i",
+      };
+    }
+
+    const menuItems = await Menu.find(filter);
 
     res.status(200).json({
+      success: true,
       count: menuItems.length,
       menuItems,
     });
+
   } catch (error) {
+
     res.status(500).json({
+      success: false,
       message: error.message,
     });
+
   }
 };
 

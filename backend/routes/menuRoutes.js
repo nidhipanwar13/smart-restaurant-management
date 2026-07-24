@@ -8,21 +8,21 @@ const {
   getMenuItemById,
   updateMenuItem,
   deleteMenuItem,
-  searchMenuItems,
-  filterMenuByCategory,
 } = require("../controllers/menuController");
 
-// Add Menu Item
+// Add Menu
 router.post("/", addMenuItem);
-// Get All Menu Items
+
+// Get All + Search + Filter
 router.get("/", getAllMenuItems);
-// Search route FIRST 
-router.get("/search", searchMenuItems); 
-router.get("/category/:category", filterMenuByCategory);
-// Get Menu Item By ID
+
+// Get By Id
 router.get("/:id", getMenuItemById);
+
+// Update
 router.put("/:id", updateMenuItem);
+
+// Delete
 router.delete("/:id", deleteMenuItem);
 
 module.exports = router;
-
