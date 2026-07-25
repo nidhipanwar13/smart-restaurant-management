@@ -6,7 +6,7 @@ import CategoryFilter from "../components/menu/CategoryFilter";
 import AddMenuButton from "../components/menu/AddMenuButton";
 
 import { getMenuItems } from "../services/menuService";
-
+import AddMenuModal from "../components/menu/AddMenuModal";
 function Menu() {
 
   const [menuItems, setMenuItems] = useState([]);
@@ -68,7 +68,7 @@ function Menu() {
       </div>
 
       <MenuList menuItems={menuItems} />
-
+      <AddMenuModal onMenuAdded={fetchMenuItems} />
     </div>
 
   );

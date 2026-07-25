@@ -1,18 +1,14 @@
 function AddMenuButton() {
-
-  const handleClick = () => {
-    alert("Add Menu functionality will be implemented next.");
-  };
-
   return (
-    <div className="col-md-2">
+    <>
       <button
-        className="btn btn-success w-100"
-        onClick={handleClick}
+        className="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#addMenuModal"
       >
         + Add Menu
       </button>
-    </div>
+    </>
   );
 }
 
