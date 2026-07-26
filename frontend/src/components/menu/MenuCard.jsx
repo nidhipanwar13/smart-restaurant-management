@@ -1,4 +1,13 @@
-function MenuCard({ menu }) {
+function MenuCard({ menu, setSelectedMenu }) {
+
+  const handleEdit = () => {
+    setSelectedMenu(menu);
+  };
+
+  const handleDelete = () => {
+    setSelectedMenu(menu);
+  };
+
   return (
     <div className="col-md-4 mb-4">
       <div className="card shadow h-100">
@@ -41,6 +50,33 @@ function MenuCard({ menu }) {
           </span>
 
         </div>
+
+        <div className="card-footer bg-white border-0">
+
+          <div className="d-flex gap-2">
+
+            <button
+              className="btn btn-warning w-50"
+              onClick={handleEdit}
+              data-bs-toggle="modal"
+              data-bs-target="#editMenuModal"
+            >
+              ✏️ Edit
+            </button>
+
+            <button
+              className="btn btn-danger w-50"
+              onClick={handleDelete}
+              data-bs-toggle="modal"
+              data-bs-target="#deleteMenuModal"
+            >
+              🗑 Delete
+            </button>
+
+          </div>
+
+        </div>
+
       </div>
     </div>
   );

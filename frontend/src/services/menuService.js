@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/menu";
 
-// Get Menu Items with Search & Category
+// Get Menu Items
 export const getMenuItems = async (
   search = "",
   category = "All"
@@ -27,7 +27,17 @@ export const getMenuItems = async (
   return await axios.get(url);
 };
 
-// Add Menu Item
+// Add Menu
 export const addMenuItem = async (menuData) => {
   return await axios.post(API_URL, menuData);
+};
+
+// ✅ Update Menu
+export const updateMenuItem = async (id, menuData) => {
+  return await axios.put(`${API_URL}/${id}`, menuData);
+};
+
+// Delete Menu
+export const deleteMenuItem = async (id) => {
+  return await axios.delete(`${API_URL}/${id}`);
 };
