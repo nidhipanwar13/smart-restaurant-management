@@ -11,11 +11,15 @@ import "react-toastify/dist/ReactToastify.css";
 import "./styles/main.css";
 
 import App from "./App";
+import AuthProvider from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+
+      <AuthProvider>
+        <App />
+      </AuthProvider>
 
       <ToastContainer
         position="top-right"
@@ -26,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         draggable
         theme="colored"
       />
+
     </BrowserRouter>
   </React.StrictMode>
 );
