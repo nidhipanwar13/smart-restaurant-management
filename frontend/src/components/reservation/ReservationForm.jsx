@@ -16,7 +16,6 @@ const ReservationForm = ({
     reservationDate: "",
     reservationTime: "",
     numberOfGuests: "",
-    tableNumber: "",
     specialRequest: "",
   });
 
@@ -30,7 +29,6 @@ const ReservationForm = ({
           selectedReservation.reservationDate.split("T")[0],
         reservationTime: selectedReservation.reservationTime,
         numberOfGuests: selectedReservation.numberOfGuests,
-        tableNumber: selectedReservation.tableNumber,
         specialRequest: selectedReservation.specialRequest || "",
       });
     }
@@ -43,31 +41,31 @@ const ReservationForm = ({
     });
   };
 
+  const resetForm = () => {
+    setFormData({
+      customerName: "",
+      email: "",
+      phone: "",
+      reservationDate: "",
+      reservationTime: "",
+      numberOfGuests: "",
+      specialRequest: "",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       if (selectedReservation) {
         await updateReservation(selectedReservation._id, formData);
-
         alert("Reservation Updated Successfully!");
       } else {
         await createReservation(formData);
-
         alert("Reservation Created Successfully!");
       }
 
-      setFormData({
-        customerName: "",
-        email: "",
-        phone: "",
-        reservationDate: "",
-        reservationTime: "",
-        numberOfGuests: "",
-        tableNumber: "",
-        specialRequest: "",
-      });
-
+      resetForm();
       clearSelection();
       onReservationAdded();
     } catch (error) {
@@ -88,6 +86,7 @@ const ReservationForm = ({
 
       <form onSubmit={handleSubmit}>
         <div className="row">
+
           {/* Customer Name */}
           <div className="col-md-6 mb-3">
             <label className="form-label">Customer Name</label>
@@ -158,6 +157,7 @@ const ReservationForm = ({
             <label className="form-label">Number of Guests</label>
             <input
               type="number"
+              min="1"
               className="form-control"
               name="numberOfGuests"
               value={formData.numberOfGuests}
@@ -166,30 +166,19 @@ const ReservationForm = ({
             />
           </div>
 
-          {/* Table Number */}
-          <div className="col-md-6 mb-3">
-            <label className="form-label">Table Number</label>
-            <input
-              type="number"
+          {/* Special Request */}
+          <div className="col-12 mb-3">
+            <label className="form-label">Special Request</label>
+            <textarea
               className="form-control"
-              name="tableNumber"
-              value={formData.tableNumber}
+              name="specialRequest"
+              rows="3"
+              value={formData.specialRequest}
               onChange={handleChange}
-              required
+              placeholder="Birthday celebration, window seat, wheelchair access, high chair, etc."
             />
           </div>
 
-          {/* Special Request */}
-          <div className="col-md-6 mb-3">
-            <label className="form-label">Special Request</label>
-            <input
-              type="text"
-              className="form-control"
-              name="specialRequest"
-              value={formData.specialRequest}
-              onChange={handleChange}
-            />
-          </div>
         </div>
 
         <div className="mt-3">
@@ -211,17 +200,7 @@ const ReservationForm = ({
               type="button"
               className="btn btn-secondary ms-2"
               onClick={() => {
-                setFormData({
-                  customerName: "",
-                  email: "",
-                  phone: "",
-                  reservationDate: "",
-                  reservationTime: "",
-                  numberOfGuests: "",
-                  tableNumber: "",
-                  specialRequest: "",
-                });
-
+                resetForm();
                 clearSelection();
               }}
             >

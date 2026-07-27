@@ -37,11 +37,6 @@ const reservationSchema = new mongoose.Schema(
       min: 1,
     },
 
-    tableNumber: {
-      type: Number,
-      required: true,
-    },
-
     specialRequest: {
       type: String,
       default: "",

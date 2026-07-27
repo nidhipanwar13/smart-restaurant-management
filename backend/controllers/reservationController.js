@@ -10,7 +10,6 @@ exports.createReservation = async (req, res) => {
       reservationDate,
       reservationTime,
       numberOfGuests,
-      tableNumber,
       specialRequest,
     } = req.body;
 
@@ -21,8 +20,7 @@ exports.createReservation = async (req, res) => {
       !phone ||
       !reservationDate ||
       !reservationTime ||
-      !numberOfGuests ||
-      !tableNumber
+      !numberOfGuests
     ) {
       return res.status(400).json({
         message: "Please fill all required fields",
@@ -48,20 +46,6 @@ exports.createReservation = async (req, res) => {
       });
     }
 
-    // Check duplicate reservation
-    const existingReservation = await Reservation.findOne({
-      reservationDate,
-      reservationTime,
-      tableNumber,
-      status: { $ne: "Cancelled" },
-    });
-
-    if (existingReservation) {
-      return res.status(400).json({
-        message: "Table is already reserved for this date and time",
-      });
-    }
-
     // Create reservation
     const reservation = await Reservation.create({
       customerName,
@@ -70,7 +54,6 @@ exports.createReservation = async (req, res) => {
       reservationDate,
       reservationTime,
       numberOfGuests,
-      tableNumber,
       specialRequest,
     });
 
