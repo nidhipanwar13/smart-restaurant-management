@@ -7,6 +7,7 @@ const testRoutes = require("./routes/testRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const app = express();
+const feedbackRoutes = require("./routes/feedbackRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use("/api/menu", menuRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/reservations", reservationRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 module.exports = app;
 
