@@ -1,0 +1,64 @@
+.dashboard-page {
+    min-height: 100vh;
+    padding: 25px;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,0.15),
+            rgba(255,255,255,0.15)
+        ),
+        url("../images/dashboard-bg.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.dashboard-header{
+    margin-bottom:25px;
+}
+
+.dashboard-header h2{
+    font-weight:700;
+    color:#222;
+}
+
+.dashboard-header p{
+    color:#222;
+}
+
+.dashboard-card{
+    border:none;
+    border-radius:16px;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(6px);
+    transition:.3s;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+
+.dashboard-table{
+    border:none;
+    border-radius:16px;
+    background:rgba(255,255,255,0.94);
+    backdrop-filter:blur(8px);
+    overflow:hidden;
+}
+
+.dashboard-table .card-header{
+    background:transparent;
+    border-bottom:1px solid #ececec;
+}
+
+.table th{
+    font-weight:600;
+}
+
+.table td,
+.table th{
+    vertical-align:middle;
+}

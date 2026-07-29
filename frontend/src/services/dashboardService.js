@@ -1,5 +1,20 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/dashboard";
+const API = axios.create({
+  baseURL: "http://localhost:5000/api/dashboard",
+});
 
-export const getDashboardStats = () => axios.get(API_URL);
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+export const getDashboardData = async () => {
+  const response = await API.get("/");
+  return response.data;
+};

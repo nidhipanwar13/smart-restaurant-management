@@ -2,41 +2,37 @@ const mongoose = require("mongoose");
 
 const feedbackSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     customerName: {
       type: String,
-      required: [true, "Customer name is required"],
+      required: true,
       trim: true,
     },
 
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: true,
       trim: true,
       lowercase: true,
     },
 
     rating: {
       type: Number,
-      required: [true, "Rating is required"],
+      required: true,
       min: 1,
       max: 5,
     },
 
-    feedback: {
+    comment: {
       type: String,
-      required: [true, "Feedback is required"],
+      required: true,
       trim: true,
-    },
-
-    visitDate: {
-      type: Date,
-      required: [true, "Visit date is required"],
-    },
-
-    status: {
-      type: String,
-      enum: ["Pending", "Reviewed", "Resolved"],
-      default: "Pending",
+      maxlength: 500,
     },
   },
   {

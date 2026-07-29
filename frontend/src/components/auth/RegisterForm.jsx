@@ -29,7 +29,6 @@ function RegisterForm() {
 
     const { name, email, password, confirmPassword } = formData;
 
-    // Validation
     if (!name || !email || !password || !confirmPassword) {
       toast.error("Please fill all fields");
       return;
@@ -51,7 +50,6 @@ function RegisterForm() {
 
       toast.success(response.data.message);
 
-      // Redirect to Login Page
       navigate("/login");
     } catch (error) {
       toast.error(
@@ -66,12 +64,15 @@ function RegisterForm() {
     <form onSubmit={handleSubmit}>
       {/* Name */}
       <div className="mb-3">
-        <label className="form-label">Name</label>
+        <label className="form-label fw-semibold">
+          Name
+        </label>
+
         <input
           type="text"
           className="form-control"
           name="name"
-          placeholder="Enter your name"
+          placeholder="Enter your full name"
           value={formData.name}
           onChange={handleChange}
         />
@@ -79,7 +80,10 @@ function RegisterForm() {
 
       {/* Email */}
       <div className="mb-3">
-        <label className="form-label">Email</label>
+        <label className="form-label fw-semibold">
+          Email
+        </label>
+
         <input
           type="email"
           className="form-control"
@@ -92,25 +96,31 @@ function RegisterForm() {
 
       {/* Password */}
       <div className="mb-3">
-        <label className="form-label">Password</label>
+        <label className="form-label fw-semibold">
+          Password
+        </label>
+
         <input
           type="password"
           className="form-control"
           name="password"
-          placeholder="Enter password"
+          placeholder="Enter your password"
           value={formData.password}
           onChange={handleChange}
         />
       </div>
 
       {/* Confirm Password */}
-      <div className="mb-3">
-        <label className="form-label">Confirm Password</label>
+      <div className="mb-4">
+        <label className="form-label fw-semibold">
+          Confirm Password
+        </label>
+
         <input
           type="password"
           className="form-control"
           name="confirmPassword"
-          placeholder="Confirm password"
+          placeholder="Confirm your password"
           value={formData.confirmPassword}
           onChange={handleChange}
         />
@@ -121,14 +131,25 @@ function RegisterForm() {
         type="submit"
         className="btn btn-success w-100"
         disabled={loading}
+        style={{
+          height: "55px",
+          fontSize: "18px",
+          fontWeight: "600",
+          borderRadius: "12px",
+        }}
       >
-        {loading ? "Registering..." : "Register"}
+        {loading ? "Creating Account..." : "Create Account"}
       </button>
 
       {/* Login Link */}
-      <div className="text-center mt-3">
+      <div className="text-center mt-4">
         Already have an account?{" "}
-        <Link to="/login">Login</Link>
+        <Link
+          to="/login"
+          className="text-decoration-none fw-bold"
+        >
+          Login
+        </Link>
       </div>
     </form>
   );

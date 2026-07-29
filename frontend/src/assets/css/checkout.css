@@ -1,0 +1,37 @@
+.checkout-page {
+    padding: 30px 0;
+    
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,0.55),
+            rgba(0,0,0,0.55)
+        ),
+        url("../images/cart-bg.jpg");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+.checkout-form {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0,0,0,.08);
+}
+
+.summary-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0,0,0,.08);
+}
+
+.summary-card h4 {
+    margin-bottom: 20px;
+}
+
+.summary-card hr {
+    margin: 15px 0;
+}

@@ -14,9 +14,10 @@ const orderSchema = new mongoose.Schema(
       trim: true,
     },
 
-    tableNumber: {
-      type: Number,
-      required: true,
+    specialInstructions: {
+      type: String,
+      trim: true,
+      default: "",
     },
 
     items: [

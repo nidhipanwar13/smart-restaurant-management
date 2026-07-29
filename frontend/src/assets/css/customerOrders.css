@@ -1,0 +1,37 @@
+.customer-orders{
+    min-height:100vh;
+
+    padding:40px 0;
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.35)
+        ),
+        url("../images/orders-bg.jpg");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.order-card{
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.order-card:hover{
+    transform:translateY(-4px);
+}
+
+.order-card h5{
+    font-weight:700;
+}
+
+.order-card hr{
+    margin:15px 0;
+}

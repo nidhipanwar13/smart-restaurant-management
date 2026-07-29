@@ -1,0 +1,61 @@
+.orders-page{
+    padding:30px;
+}
+
+.orders-header{
+    margin-bottom:25px;
+}
+
+.orders-toolbar{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.orders-toolbar input{
+    flex:1;
+}
+
+.orders-toolbar select{
+    width:220px;
+}
+
+.customer-orders{
+    min-height:100vh;
+    padding:40px 0;
+
+    background:
+        linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
+        url("../images/orders-bg.jpg");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+.order-card{
+    background:#fff;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    transition:.3s;
+    height:100%;
+}
+
+.order-card:hover{
+    transform:translateY(-4px);
+}
+
+@media(max-width:768px){
+
+    .customer-orders{
+        background-attachment:scroll;
+        padding:20px 0;
+    }
+
+    .order-card{
+        padding:18px;
+    }
+
+}

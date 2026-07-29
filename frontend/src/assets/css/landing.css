@@ -1,0 +1,76 @@
+.landing-page{
+    min-height:100vh;
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,.65),
+            rgba(0,0,0,.65)
+        ),
+        url("../images/landing-bg.jpg");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.landing-overlay{
+    width:100%;
+    padding:20px;
+}
+
+.landing-content{
+    max-width:900px;
+    margin:auto;
+    text-align:center;
+    color:#fff;
+}
+
+.landing-icon{
+    font-size:70px;
+    margin-bottom:15px;
+}
+
+.landing-title{
+    font-size:56px;
+    font-weight:700;
+    line-height:1.2;
+    margin-bottom:25px;
+}
+
+.landing-subtitle{
+    font-size:22px;
+    line-height:1.8;
+    color:rgba(255,255,255,.9);
+
+    max-width:700px;
+    margin:0 auto 45px;
+}
+
+.landing-buttons .btn{
+    min-width:180px;
+    height:58px;
+
+    border-radius:14px;
+
+    font-size:18px;
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.landing-buttons .btn:hover{
+    transform:translateY(-3px);
+}
+
+.btn-outline-light{
+    border-width:2px;
+}
+
+.btn-outline-light:hover{
+    color:#0d6efd;
+}

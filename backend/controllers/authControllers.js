@@ -2,19 +2,19 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Register User
+// ===============================
+// Register User (Customer Only)
+// ===============================
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check all fields
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "Please fill all fields",
       });
     }
 
-    // Check existing user
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -23,14 +23,13 @@ exports.registerUser = async (req, res) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Save user
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
+      // Role will default to "customer"
     });
 
     res.status(201).json({
@@ -49,19 +48,65 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// Login User
-exports.loginUser = async (req, res) => {
+// ===============================
+// Create Admin (Development Only)
+// ===============================
+exports.createAdmin = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    // Check fields
-    if (!email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         message: "Please fill all fields",
       });
     }
 
-    // Find user
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: "User already exists",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const admin = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role: "admin",
+    });
+
+    res.status(201).json({
+      message: "Admin created successfully",
+      admin: {
+        id: admin._id,
+        name: admin.name,
+        email: admin.email,
+        role: admin.role,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// ===============================
+// Login User
+// ===============================
+exports.loginUser = async (req, res) => {
+  try {
+    const { email, password, role } = req.body;
+
+    if (!email || !password || !role) {
+      return res.status(400).json({
+        message: "Please fill all fields",
+      });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -70,7 +115,13 @@ exports.loginUser = async (req, res) => {
       });
     }
 
-    // Compare password
+    // Verify selected role
+    if (user.role !== role) {
+      return res.status(403).json({
+        message: `You are not authorized to login as ${role}`,
+      });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -79,7 +130,6 @@ exports.loginUser = async (req, res) => {
       });
     }
 
-    // Generate JWT
     const token = jwt.sign(
       {
         id: user._id,
@@ -108,7 +158,9 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// Get Logged In User
+// ===============================
+// Get Logged-in User Profile
+// ===============================
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -126,4 +178,3 @@ exports.getProfile = async (req, res) => {
     });
   }
 };
- 

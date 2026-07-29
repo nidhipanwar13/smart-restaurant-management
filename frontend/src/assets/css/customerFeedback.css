@@ -1,0 +1,143 @@
+/* ===============================
+   Customer Feedback Page
+================================== */
+
+.feedback-page {
+  min-height: 100vh;
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.75),
+      rgba(0, 0, 0, 0.75)
+    ),
+    url("../images/feedback-bg.jpg") center/cover no-repeat;
+  padding: 50px 20px;
+}
+
+/* ===============================
+   Feedback Card
+================================== */
+
+.feedback-card {
+  max-width: 700px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 18px;
+  padding: 35px;
+  color: white;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* ===============================
+   Labels
+================================== */
+
+.feedback-card .form-label {
+  color: #ffffff;
+  font-size: 16px;
+}
+
+/* ===============================
+   Textarea
+================================== */
+
+.feedback-card textarea {
+  resize: none;
+  border-radius: 12px;
+  padding: 15px;
+  border: none;
+  font-size: 15px;
+}
+
+.feedback-card textarea:focus {
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+}
+
+/* ===============================
+   Star Rating
+================================== */
+
+.star-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.star {
+  font-size: 42px;
+  color: #bfbfbf;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.star:hover {
+  transform: scale(1.2);
+  color: #ffc107;
+}
+
+.star.active {
+  color: #ffc107;
+  text-shadow: 0 0 12px rgba(255, 193, 7, 0.8);
+}
+
+/* ===============================
+   Buttons
+================================== */
+
+.feedback-card .btn {
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 12px;
+  transition: 0.3s;
+}
+
+.feedback-card .btn-success:hover {
+  transform: translateY(-2px);
+}
+
+.feedback-card .btn-danger:hover {
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   Responsive
+================================== */
+
+@media (max-width: 768px) {
+  .feedback-page {
+    padding: 25px 15px;
+  }
+
+  .feedback-card {
+    padding: 25px;
+  }
+
+  .star {
+    font-size: 34px;
+  }
+
+  .feedback-card h4 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 576px) {
+  .feedback-card {
+    padding: 20px;
+  }
+
+  .star-container {
+    gap: 8px;
+  }
+
+  .star {
+    font-size: 30px;
+  }
+
+  .feedback-card .btn {
+    font-size: 15px;
+  }
+}

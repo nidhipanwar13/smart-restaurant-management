@@ -13,7 +13,6 @@ exports.createReservation = async (req, res) => {
       specialRequest,
     } = req.body;
 
-    // Check required fields
     if (
       !customerName ||
       !email ||
@@ -23,11 +22,10 @@ exports.createReservation = async (req, res) => {
       !numberOfGuests
     ) {
       return res.status(400).json({
-        message: "Please fill all required fields",
+        message: "Please fill all required fields.",
       });
     }
 
-    // Date validation
     const bookingDate = new Date(reservationDate);
     const today = new Date();
 
@@ -35,18 +33,16 @@ exports.createReservation = async (req, res) => {
 
     if (bookingDate < today) {
       return res.status(400).json({
-        message: "Reservation date cannot be in the past",
+        message: "Reservation date cannot be in the past.",
       });
     }
 
-    // Guest validation
-    if (numberOfGuests < 1) {
+    if (Number(numberOfGuests) < 1) {
       return res.status(400).json({
-        message: "Number of guests must be at least 1",
+        message: "Number of guests must be at least 1.",
       });
     }
 
-    // Create reservation
     const reservation = await Reservation.create({
       customerName,
       email,
@@ -58,11 +54,13 @@ exports.createReservation = async (req, res) => {
     });
 
     res.status(201).json({
-      message: "Reservation created successfully",
+      success: true,
+      message: "Reservation created successfully.",
       reservation,
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
@@ -72,16 +70,17 @@ exports.createReservation = async (req, res) => {
 exports.getAllReservations = async (req, res) => {
   try {
     const reservations = await Reservation.find().sort({
-      reservationDate: 1,
-      reservationTime: 1,
+      createdAt: -1,
     });
 
     res.status(200).json({
+      success: true,
       count: reservations.length,
       reservations,
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
@@ -94,13 +93,18 @@ exports.getReservationById = async (req, res) => {
 
     if (!reservation) {
       return res.status(404).json({
-        message: "Reservation not found",
+        success: false,
+        message: "Reservation not found.",
       });
     }
 
-    res.status(200).json(reservation);
+    res.status(200).json({
+      success: true,
+      reservation,
+    });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
@@ -113,25 +117,49 @@ exports.updateReservation = async (req, res) => {
 
     if (!reservation) {
       return res.status(404).json({
-        message: "Reservation not found",
+        success: false,
+        message: "Reservation not found.",
       });
     }
 
-    const updatedReservation = await Reservation.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
+    const currentStatus = reservation.status;
+    const newStatus = req.body.status;
+
+    // Allow only valid status transitions
+    if (newStatus && newStatus !== currentStatus) {
+      const validTransitions = {
+        Pending: ["Confirmed", "Cancelled"],
+        Confirmed: ["Completed", "Cancelled"],
+        Completed: [],
+        Cancelled: [],
+      };
+
+      if (!validTransitions[currentStatus].includes(newStatus)) {
+        return res.status(400).json({
+          success: false,
+          message: `Cannot change reservation status from "${currentStatus}" to "${newStatus}".`,
+        });
       }
-    );
+    }
+
+    const updatedReservation =
+      await Reservation.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
 
     res.status(200).json({
-      message: "Reservation updated successfully",
+      success: true,
+      message: "Reservation updated successfully.",
       reservation: updatedReservation,
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
@@ -144,17 +172,20 @@ exports.deleteReservation = async (req, res) => {
 
     if (!reservation) {
       return res.status(404).json({
-        message: "Reservation not found",
+        success: false,
+        message: "Reservation not found.",
       });
     }
 
     await Reservation.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
-      message: "Reservation deleted successfully",
+      success: true,
+      message: "Reservation deleted successfully.",
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }

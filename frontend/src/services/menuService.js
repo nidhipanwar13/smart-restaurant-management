@@ -1,43 +1,39 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/menu";
+const API = "http://localhost:5000/api/menu";
 
-// Get Menu Items
-export const getMenuItems = async (
-  search = "",
-  category = "All"
-) => {
+// Get all menu items
+export const getAllMenuItems = async (search = "", category = "All") => {
+  const response = await axios.get(API, {
+    params: {
+      search,
+      category,
+    },
+  });
 
-  let url = API_URL;
-
-  const params = [];
-
-  if (search.trim() !== "") {
-    params.push(`search=${encodeURIComponent(search)}`);
-  }
-
-  if (category !== "All") {
-    params.push(`category=${encodeURIComponent(category)}`);
-  }
-
-  if (params.length > 0) {
-    url += `?${params.join("&")}`;
-  }
-
-  return await axios.get(url);
+  return response.data;
 };
 
-// Add Menu
+// Get menu item by ID
+export const getMenuItemById = async (id) => {
+  const response = await axios.get(`${API}/${id}`);
+  return response.data;
+};
+
+// Add menu item
 export const addMenuItem = async (menuData) => {
-  return await axios.post(API_URL, menuData);
+  const response = await axios.post(API, menuData);
+  return response.data;
 };
 
-// ✅ Update Menu
+// Update menu item
 export const updateMenuItem = async (id, menuData) => {
-  return await axios.put(`${API_URL}/${id}`, menuData);
+  const response = await axios.put(`${API}/${id}`, menuData);
+  return response.data;
 };
 
-// Delete Menu
+// Delete menu item
 export const deleteMenuItem = async (id) => {
-  return await axios.delete(`${API_URL}/${id}`);
+  const response = await axios.delete(`${API}/${id}`);
+  return response.data;
 };

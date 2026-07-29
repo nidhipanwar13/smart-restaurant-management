@@ -1,0 +1,55 @@
+.reservations-page{
+    min-height:100vh;
+    padding:25px;
+    
+
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,0.55),
+            rgba(0,0,0,0.55)
+        ),
+        url("../images/reservations-bg.jpg");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+.reservation-card{
+    background:rgba(255,255,255,0.90);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+
+    border:none;
+    border-radius:18px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,0.18);
+}
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead th{
+    background:#212529;
+    color:#fff;
+    border:none;
+}
+
+.table tbody tr:hover{
+    background:rgba(0,0,0,0.04);
+}
+
+.form-control{
+    border-radius:10px;
+}
+
+.btn{
+    border-radius:8px;
+}
+
+.badge{
+    padding:8px 12px;
+    font-size:13px;
+}

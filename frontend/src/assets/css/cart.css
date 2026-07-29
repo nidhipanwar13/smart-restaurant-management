@@ -1,0 +1,21 @@
+.cart-page {
+    min-height: calc(100vh - 70px); /* Adjust if your navbar height is different */
+    padding: 40px 20px;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.60),
+            rgba(0, 0, 0, 0.60)
+        ),
+        url("../images/cart-bg.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Use with caution */
+    background-attachment: fixed;
+
+    display: flex;
+    flex-direction: column;
+}
