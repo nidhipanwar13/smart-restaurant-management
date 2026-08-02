@@ -62,3 +62,188 @@
 .table th{
     vertical-align:middle;
 }
+
+.order-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    transition: .3s;
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.15);
+}
+
+.order-card ul {
+    padding-left: 18px;
+}
+
+.order-card li {
+    margin-bottom: 6px;
+}
+
+.order-card h5 {
+    font-weight: 600;
+}
+
+/* Latest Orders */
+
+.latest-order-card{
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s;
+    height:100%;
+}
+
+.latest-order-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 15px 30px rgba(0,0,0,.15);
+}
+
+.latest-order-card ul{
+    margin:0;
+    padding-left:18px;
+}
+
+.latest-order-card hr{
+    margin:15px 0;
+}
+
+.latest-order-card h5{
+    font-size:1.15rem;
+}
+
+.latest-order-card small{
+    font-size:.9rem;
+}
+
+.latest-order-card li{
+    padding:2px 0;
+}
+
+.latest-order-card h6{
+    font-weight:600;
+}
+
+.latest-order-card{
+    border-left:5px solid #0d6efd;
+}
+
+.activity-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    padding:25px;
+
+    transition:.3s;
+
+}
+
+.activity-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+.pending{
+
+    border-top:5px solid #ffc107;
+
+}
+
+.preparing{
+
+    border-top:5px solid #0d6efd;
+
+}
+
+.ready{
+
+    border-top:5px solid #17a2b8;
+
+}
+
+.served{
+
+    border-top:5px solid #198754;
+
+}
+
+.activity-card h2{
+
+    font-weight:700;
+
+}
+
+/* ================================
+   Statistics Cards
+================================ */
+
+.stat-card{
+    border-radius:18px;
+    transition:.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+
+
+.stat-card h2{
+
+    color:#2c3e50;
+
+    margin:0;
+
+}
+
+.stat-card small{
+
+    font-size:.85rem;
+
+}
+
+.stat-icon{
+    width:60px;
+    height:60px;
+    border-radius:16px;
+}
+.badge{
+    border-radius:50px;
+    padding:8px 14px;
+    font-size:.8rem;
+}
+.customer-avatar{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:#0d6efd;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:700;
+
+    font-size:18px;
+
+}

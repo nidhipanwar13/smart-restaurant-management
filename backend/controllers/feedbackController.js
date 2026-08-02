@@ -1,11 +1,12 @@
 const Feedback = require("../models/feedbackModel");
-const User = require("../models/user");
+const Order = require("../models/Order");
 
-// =========================================
-// Create Feedback (Customer)
-// =========================================
+// ======================================================
+// Customer - Submit Feedback for an Order
+// ======================================================
 const createFeedback = async (req, res) => {
   try {
+    const { orderId } = req.params;
     const { rating, comment } = req.body;
 
     if (!rating || !comment) {
@@ -15,39 +16,46 @@ const createFeedback = async (req, res) => {
       });
     }
 
-    if (rating < 1 || rating > 5) {
-      return res.status(400).json({
-        success: false,
-        message: "Rating must be between 1 and 5.",
-      });
-    }
+    const order = await Order.findById(orderId);
 
-    // Get logged-in user
-    const loggedInUser = await User.findById(req.user.id);
-
-    if (!loggedInUser) {
+    if (!order) {
       return res.status(404).json({
         success: false,
-        message: "User not found.",
+        message: "Order not found.",
       });
     }
 
-    // One feedback per customer
+    // Only owner can review
+    if (order.user.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized access.",
+      });
+    }
+
+    // Only served orders can be reviewed
+    if (order.status !== "Served") {
+      return res.status(400).json({
+        success: false,
+        message: "Feedback can only be submitted after the order is served.",
+      });
+    }
+
     const existingFeedback = await Feedback.findOne({
-      user: loggedInUser._id,
+      user: req.user.id,
+      order: orderId,
     });
 
     if (existingFeedback) {
       return res.status(400).json({
         success: false,
-        message: "You have already submitted feedback. You can edit it instead.",
+        message: "Feedback already submitted for this order.",
       });
     }
 
-    const newFeedback = await Feedback.create({
-      user: loggedInUser._id,
-      customerName: loggedInUser.name,
-      email: loggedInUser.email,
+    const feedback = await Feedback.create({
+      user: req.user.id,
+      order: orderId,
       rating,
       comment,
     });
@@ -55,7 +63,7 @@ const createFeedback = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Feedback submitted successfully.",
-      feedback: newFeedback,
+      feedback,
     });
   } catch (error) {
     res.status(500).json({
@@ -65,13 +73,16 @@ const createFeedback = async (req, res) => {
   }
 };
 
-// =========================================
-// Customer - Get My Feedback
-// =========================================
-const getMyFeedback = async (req, res) => {
+// ======================================================
+// Customer - Get Feedback By Order
+// ======================================================
+const getFeedbackByOrder = async (req, res) => {
   try {
+    const { orderId } = req.params;
+
     const feedback = await Feedback.findOne({
       user: req.user.id,
+      order: orderId,
     });
 
     res.status(200).json({
@@ -86,65 +97,18 @@ const getMyFeedback = async (req, res) => {
   }
 };
 
-// =========================================
-// Admin - Get All Feedback
-// =========================================
-const getAllFeedback = async (req, res) => {
-  try {
-    const feedback = await Feedback.find()
-      .populate("user", "name email")
-      .sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      count: feedback.length,
-      feedback,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-// =========================================
-// Get Feedback By ID (Admin)
-// =========================================
-const getFeedbackById = async (req, res) => {
-  try {
-    const feedback = await Feedback.findById(req.params.id).populate(
-      "user",
-      "name email"
-    );
-
-    if (!feedback) {
-      return res.status(404).json({
-        success: false,
-        message: "Feedback not found.",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      feedback,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-// =========================================
-// Customer - Update Own Feedback
-// =========================================
+// ======================================================
+// Customer - Update Feedback
+// ======================================================
 const updateFeedback = async (req, res) => {
   try {
+    const { orderId } = req.params;
     const { rating, comment } = req.body;
 
-    const feedback = await Feedback.findById(req.params.id);
+    const feedback = await Feedback.findOne({
+      user: req.user.id,
+      order: orderId,
+    });
 
     if (!feedback) {
       return res.status(404).json({
@@ -153,27 +117,8 @@ const updateFeedback = async (req, res) => {
       });
     }
 
-    if (feedback.user.toString() !== req.user.id) {
-      return res.status(403).json({
-        success: false,
-        message: "Unauthorized access.",
-      });
-    }
-
-    if (rating) {
-      if (rating < 1 || rating > 5) {
-        return res.status(400).json({
-          success: false,
-          message: "Rating must be between 1 and 5.",
-        });
-      }
-
-      feedback.rating = rating;
-    }
-
-    if (comment) {
-      feedback.comment = comment;
-    }
+    if (rating) feedback.rating = rating;
+    if (comment) feedback.comment = comment;
 
     await feedback.save();
 
@@ -190,35 +135,32 @@ const updateFeedback = async (req, res) => {
   }
 };
 
-// =========================================
-// Delete Feedback
-// =========================================
+// ======================================================
+// Delete Feedback (Customer/Admin)
+// ======================================================
 const deleteFeedback = async (req, res) => {
   try {
-    const feedback = await Feedback.findById(req.params.id);
+    const { orderId } = req.params;
+
+    let feedback;
+
+    // Admin can delete any feedback
+    if (req.user.role === "admin") {
+      feedback = await Feedback.findOne({
+        order: orderId,
+      });
+    } else {
+      // Customer can delete only their own feedback
+      feedback = await Feedback.findOne({
+        user: req.user.id,
+        order: orderId,
+      });
+    }
 
     if (!feedback) {
       return res.status(404).json({
         success: false,
         message: "Feedback not found.",
-      });
-    }
-
-    // Admin can delete any feedback
-    if (req.user.role === "admin") {
-      await feedback.deleteOne();
-
-      return res.status(200).json({
-        success: true,
-        message: "Feedback deleted successfully.",
-      });
-    }
-
-    // Customer can delete only own feedback
-    if (feedback.user.toString() !== req.user.id) {
-      return res.status(403).json({
-        success: false,
-        message: "Unauthorized access.",
       });
     }
 
@@ -236,11 +178,74 @@ const deleteFeedback = async (req, res) => {
   }
 };
 
+// ======================================================
+// Admin - Get All Feedback
+// ======================================================
+const getAllFeedback = async (req, res) => {
+  try {
+    const feedback = await Feedback.find()
+      .populate("user", "name email")
+      .populate({
+        path: "order",
+        populate: {
+          path: "items.menuItem",
+          model: "Menu",
+        },
+      })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: feedback.length,
+      feedback,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// ======================================================
+// Admin - Get Feedback By ID
+// ======================================================
+const getFeedbackById = async (req, res) => {
+  try {
+    const feedback = await Feedback.findById(req.params.id)
+      .populate("user", "name email")
+      .populate({
+        path: "order",
+        populate: {
+          path: "items.menuItem",
+          model: "Menu",
+        },
+      });
+
+    if (!feedback) {
+      return res.status(404).json({
+        success: false,
+        message: "Feedback not found.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      feedback,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createFeedback,
-  getMyFeedback,
-  getAllFeedback,
-  getFeedbackById,
+  getFeedbackByOrder,
   updateFeedback,
   deleteFeedback,
+  getAllFeedback,
+  getFeedbackById,
 };

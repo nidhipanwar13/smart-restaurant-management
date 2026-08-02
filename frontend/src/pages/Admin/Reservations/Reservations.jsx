@@ -90,24 +90,30 @@ function Reservations() {
   };
 
   const badgeClass = (status) => {
-    switch (status) {
-      case "Pending":
-        return "bg-warning text-dark";
 
-      case "Confirmed":
-        return "bg-success";
+  switch (status) {
 
-      case "Completed":
-        return "bg-primary";
+    case "Pending":
+      return "bg-warning text-dark";
 
-      case "Cancelled":
-        return "bg-danger";
+    case "Confirmed":
+      return "bg-success";
 
-      default:
-        return "bg-secondary";
-    }
-  };
+    case "Completed":
+      return "bg-primary";
 
+    case "Cancelled":
+      return "bg-danger";
+
+    case "No Show":
+      return "bg-dark";
+
+    default:
+      return "bg-secondary";
+
+  }
+
+};
   if (loading) {
     return (
       <div className="reservations-page">
@@ -265,33 +271,45 @@ function Reservations() {
                             </>
                           )}
 
-                          {reservation.status === "Confirmed" && (
-                            <>
-                              <button
-                                className="btn btn-primary btn-sm me-2"
-                                onClick={() =>
-                                  changeStatus(
-                                    reservation,
-                                    "Completed"
-                                  )
-                                }
-                              >
-                                Complete
-                              </button>
+                         {reservation.status === "Confirmed" && (
+  <>
+    <button
+      className="btn btn-success btn-sm me-2"
+      onClick={() =>
+        changeStatus(
+          reservation,
+          "Completed"
+        )
+      }
+    >
+      ✅ Complete
+    </button>
 
-                              <button
-                                className="btn btn-danger btn-sm"
-                                onClick={() =>
-                                  changeStatus(
-                                    reservation,
-                                    "Cancelled"
-                                  )
-                                }
-                              >
-                                Cancel
-                              </button>
-                            </>
-                          )}
+    <button
+      className="btn btn-dark btn-sm me-2"
+      onClick={() =>
+        changeStatus(
+          reservation,
+          "No Show"
+        )
+      }
+    >
+      🚫 No Show
+    </button>
+
+    <button
+      className="btn btn-danger btn-sm"
+      onClick={() =>
+        changeStatus(
+          reservation,
+          "Cancelled"
+        )
+      }
+    >
+      ❌ Cancel
+    </button>
+  </>
+)}
 
                           {(reservation.status === "Completed" ||
                             reservation.status === "Cancelled") && (

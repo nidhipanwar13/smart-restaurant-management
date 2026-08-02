@@ -23,10 +23,10 @@ function Feedback() {
 
     const filtered = feedbackList.filter((feedback) => {
       return (
-        feedback.customerName
+        feedback.user?.name
           ?.toLowerCase()
           .includes(keyword) ||
-        feedback.email
+        feedback.user?.email
           ?.toLowerCase()
           .includes(keyword)
       );
@@ -172,12 +172,12 @@ function Feedback() {
 
                         <td className="fw-semibold">
                           {
-                            feedback.customerName
+                            feedback.user?.name
                           }
                         </td>
 
                         <td>
-                          {feedback.email}
+                          {feedback.user?.email}
                         </td>
 
                         <td>
@@ -206,7 +206,7 @@ function Feedback() {
                             className="btn btn-outline-danger btn-sm"
                             onClick={() =>
                               handleDelete(
-                                feedback._id
+                                feedback.order?._id
                               )
                             }
                           >

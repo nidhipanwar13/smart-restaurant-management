@@ -12,6 +12,7 @@ import "./styles/main.css";
 import { CartProvider } from "./context/CartContext";
 import App from "./App";
 import AuthProvider from "./context/AuthContext";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

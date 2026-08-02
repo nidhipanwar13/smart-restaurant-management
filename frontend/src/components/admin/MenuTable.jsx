@@ -76,7 +76,7 @@ const MenuTable = ({ menuItems, onEdit, onDelete }) => {
               <td>
 
                 <button
-                  className="btn btn-primary btn-sm me-2"
+                  className="btn btn-warning btn-sm  me-4 fw-semibold action-btn"
                   onClick={() => onEdit(item)}
                 >
                   Edit

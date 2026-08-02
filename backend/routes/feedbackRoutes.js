@@ -1,46 +1,49 @@
 const express = require("express");
 
-const {
-  createFeedback,
-  getMyFeedback,
-  getAllFeedback,
-  getFeedbackById,
-  updateFeedback,
-  deleteFeedback,
-} = require("../controllers/feedbackController");
-
-const { protect, admin } = require("../middleware/authMiddleware");
-
 const router = express.Router();
 
+const {
+  createFeedback,
+  getFeedbackByOrder,
+  updateFeedback,
+  deleteFeedback,
+  getAllFeedback,
+  getFeedbackById,
+} = require("../controllers/feedbackController");
+
+const {
+  protect,
+  admin,
+} = require("../middleware/authMiddleware");
+
 /*
-=========================================
+=================================================
 Customer Routes
-=========================================
+=================================================
 */
 
-// Submit Feedback
-router.post("/", protect, createFeedback);
+// Submit feedback for a specific order
+router.post("/order/:orderId", protect, createFeedback);
 
-// Get Logged-in Customer Feedback
-router.get("/my", protect, getMyFeedback);
+// Get feedback for a specific order
+router.get("/order/:orderId", protect, getFeedbackByOrder);
 
-// Update Own Feedback
-router.put("/:id", protect, updateFeedback);
+// Update feedback for a specific order
+router.put("/order/:orderId", protect, updateFeedback);
 
-// Delete Own Feedback
-router.delete("/:id", protect, deleteFeedback);
+// Delete feedback for a specific order
+router.delete("/order/:orderId", protect, deleteFeedback);
 
 /*
-=========================================
+=================================================
 Admin Routes
-=========================================
+=================================================
 */
 
-// View All Customer Feedback
+// Get all feedback
 router.get("/", protect, admin, getAllFeedback);
 
-// View Feedback By ID
+// Get feedback by feedback ID
 router.get("/:id", protect, admin, getFeedbackById);
 
 module.exports = router;

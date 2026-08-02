@@ -10,14 +10,38 @@ const {
   deleteOrder,
 } = require("../controllers/orderController");
 
-router.get("/", getAllOrders);
+const {
+  protect,
+  admin,
+} = require("../middleware/authMiddleware");
 
-router.get("/:id", getOrderById);
+/*
+=================================================
+Customer Routes
+=================================================
+*/
 
-router.post("/", createOrder);
+// Customer can create an order
+router.post("/", protect, createOrder);
 
-router.put("/:id", updateOrder);
+// Customer gets only their own orders
+// Admin gets all orders
+router.get("/", protect, getAllOrders);
 
-router.delete("/:id", deleteOrder);
+// Customer can view their own order
+// Admin can view any order
+router.get("/:id", protect, getOrderById);
+
+/*
+=================================================
+Admin Routes
+=================================================
+*/
+
+// Admin updates order status
+router.put("/:id", protect, admin, updateOrder);
+
+// Admin deletes orders
+router.delete("/:id", protect, admin, deleteOrder);
 
 module.exports = router;

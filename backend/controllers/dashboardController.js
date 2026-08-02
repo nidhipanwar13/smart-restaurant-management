@@ -2,51 +2,71 @@ const Order = require("../models/Order");
 const Menu = require("../models/Menu");
 
 const getDashboardStats = async (req, res) => {
-  try {
-    const totalOrders = await Order.countDocuments();
+    try {
+        const totalOrders = await Order.countDocuments();
 
-    const pendingOrders = await Order.countDocuments({
-      status: "Pending",
-    });
+        const pendingOrders = await Order.countDocuments({
+            status: "Pending",
+        });
+        const preparingOrders = await Order.countDocuments({
+            status: "Preparing",
+        });
 
-    const totalMenuItems = await Menu.countDocuments();
+        const readyOrders = await Order.countDocuments({
+            status: "Ready",
+        });
 
-    const revenueResult = await Order.aggregate([
-      {
-        $group: {
-          _id: null,
-          totalRevenue: { $sum: "$totalAmount" },
-        },
-      },
-    ]);
+        const servedOrders = await Order.countDocuments({
+            status: "Served",
+        });
+        const totalMenuItems = await Menu.countDocuments();
 
-    const totalRevenue =
-      revenueResult.length > 0
-        ? revenueResult[0].totalRevenue
-        : 0;
+        const revenueResult = await Order.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalRevenue: { $sum: "$totalAmount" },
+                },
+            },
+        ]);
 
-    const recentOrders = await Order.find()
-      .populate("items.menuItem")
-      .sort({ createdAt: -1 })
-      .limit(5);
+        const totalRevenue =
+            revenueResult.length > 0
+                ? revenueResult[0].totalRevenue
+                : 0;
 
-    res.status(200).json({
-      totalOrders,
-      pendingOrders,
-      totalMenuItems,
-      totalRevenue,
-      recentOrders,
-    });
+        // const recentOrders = await Order.find()
+        //   .populate("items.menuItem")
+        //   .sort({ createdAt: -1 })
+        //   .limit(5);
+        const recentOrders = await Order.find()
+            .populate("items.menuItem", "name")
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .select(
+                "customerName customerPhone items totalAmount status specialInstructions createdAt"
+            );
 
-  } catch (error) {
+        res.status(200).json({
+            totalOrders,
+            pendingOrders,
+            preparingOrders,
+            readyOrders,
+            servedOrders,
+            totalMenuItems,
+            totalRevenue,
+            recentOrders,
+        });
 
-    res.status(500).json({
-      message: error.message,
-    });
+    } catch (error) {
 
-  }
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
 };
 
 module.exports = {
-  getDashboardStats,
+    getDashboardStats,
 };

@@ -2,12 +2,14 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/feedback";
 
-// Get JWT Token
+// ======================================
+// JWT Token
+// ======================================
+
 const getToken = () => {
   return localStorage.getItem("token");
 };
 
-// Authorization Header
 const authConfig = () => ({
   headers: {
     Authorization: `Bearer ${getToken()}`,
@@ -19,10 +21,10 @@ const authConfig = () => ({
 // Customer APIs
 // ======================================
 
-// Submit Feedback
-export const submitFeedback = async (feedbackData) => {
+// Submit Feedback for an Order
+export const submitFeedback = async (orderId, feedbackData) => {
   const response = await axios.post(
-    API_URL,
+    `${API_URL}/order/${orderId}`,
     feedbackData,
     authConfig()
   );
@@ -30,10 +32,10 @@ export const submitFeedback = async (feedbackData) => {
   return response.data;
 };
 
-// Get Logged-in Customer Feedback
-export const getMyFeedback = async () => {
+// Get Feedback of an Order
+export const getFeedbackByOrder = async (orderId) => {
   const response = await axios.get(
-    `${API_URL}/my`,
+    `${API_URL}/order/${orderId}`,
     authConfig()
   );
 
@@ -41,9 +43,9 @@ export const getMyFeedback = async () => {
 };
 
 // Update Feedback
-export const updateFeedback = async (id, feedbackData) => {
+export const updateFeedback = async (orderId, feedbackData) => {
   const response = await axios.put(
-    `${API_URL}/${id}`,
+    `${API_URL}/order/${orderId}`,
     feedbackData,
     authConfig()
   );
@@ -52,9 +54,9 @@ export const updateFeedback = async (id, feedbackData) => {
 };
 
 // Delete Feedback
-export const deleteFeedback = async (id) => {
+export const deleteFeedback = async (orderId) => {
   const response = await axios.delete(
-    `${API_URL}/${id}`,
+    `${API_URL}/order/${orderId}`,
     authConfig()
   );
 

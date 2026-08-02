@@ -29,6 +29,15 @@ export const updateReservation = async (id, reservationData) => {
   return response.data;
 };
 
+// Check Slot Availability
+export const checkSlotAvailability = async (date, slot) => {
+  const response = await axios.get(
+    `${API_URL}/check-slot?date=${date}&slot=${encodeURIComponent(slot)}`
+  );
+
+  return response.data;
+};
+
 // Delete Reservation
 export const deleteReservation = async (id) => {
   const response = await axios.delete(`${API_URL}/${id}`);

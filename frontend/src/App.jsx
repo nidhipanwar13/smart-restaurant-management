@@ -122,9 +122,9 @@ function App() {
           />
 
           <Route
-            path="feedback"
-            element={<CustomerFeedback />}
-          />
+  path="feedback/:orderId"
+  element={<CustomerFeedback />}
+/>
         </Route>
       </Route>
 

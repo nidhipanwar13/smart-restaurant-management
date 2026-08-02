@@ -8,17 +8,10 @@ const feedbackSchema = new mongoose.Schema(
       required: true,
     },
 
-    customerName: {
-      type: String,
+    order: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
       required: true,
-      trim: true,
-    },
-
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
     },
 
     rating: {
@@ -38,6 +31,12 @@ const feedbackSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
+);
+
+// Prevent duplicate feedback for the same order by the same user
+feedbackSchema.index(
+  { user: 1, order: 1 },
+  { unique: true }
 );
 
 module.exports = mongoose.model("Feedback", feedbackSchema);

@@ -35,3 +35,13 @@
 .order-card hr{
     margin:15px 0;
 }
+
+.order-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  flex-shrink: 0;
+}
